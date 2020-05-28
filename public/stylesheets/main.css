@@ -1,0 +1,23 @@
+.fa-angle-down{
+    float:right;
+}
+.delete-form{
+    display:inline;
+}
+a{
+    color: unset;
+    text-decoration: unset;
+}
+a:hover{
+    color: unset;
+    text-decoration: unset;
+}
+p{
+    display: inline;
+}
+.text-muted{
+    display: inline;
+}
+.img-thumbnail{
+    margin-top:30px;
+}

@@ -4,10 +4,10 @@
         <h1 style="text-align:center">Add New Contact</h1>
         <form action="/phonebook" method="POST">
             <div class="form-group">
-                <input class="form-control" type="text" name="contact[name]" placeholder="Name" required>
+                <input class="form-control" type="text" name="name" placeholder="Name" required>
             </div>
             <div class="form-group">
-                <input class="form-control" type="date" placeholder="dd/mm/yyyy"name="contact[date]" >
+                <input class="form-control" type="date" placeholder="dd/mm/yyyy"name="date" >
             </div>
             <div class="input-group mb-3">
                 <input type="number" class="form-control" id="phonenumber" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[0]" required>
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="input-group mb-3" id="phone_add" style="display:none">
-                <input type="number" class="form-control" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[1]">
+                <input type="number" class="form-control" placeholder="98XXXXXXXX" name="number[1]">
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form1" ><i class="fa fa-trash"></i></span></span>
                 </div>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-lg btn-block btn-primary" id="btn">  Save</button>
+                <button class="btn btn-lg btn-block btn-primary" id="btn"> Save</button>
             </div>
         </form>
         <a href="/phonebook">Go Back</a>

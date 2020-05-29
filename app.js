@@ -60,20 +60,17 @@ function escapeRegex(text) {
 
 //CREATE- Add new contact to DB
 app.post('/phonebook', function (req, res) {
-    Phonebook.create(req.body.contact, function (err, newlyCreated) {
+    var name=req.body.name;
+    var date=req.body.date;
+    var number=req.body.number;
+    var email= req.body.email;
+    var newContact={name:name, date:date, number:number, email,email};
+    Phonebook.create(newContact, function (err, newlyCreated) {
         if (err) {
             console.log(err);
         }
         else {
-            req.body.number.forEach(function (phone) {
-                if (phone != '')
-                    newlyCreated.number.push(phone);
-            });
-            req.body.email.forEach(function (email) {
-                if (email != '')
-                    newlyCreated.email.push(email);
-            });
-            newlyCreated.save();
+            console.log(newlyCreated);
             res.redirect("/phonebook/page/1");
         }
     });

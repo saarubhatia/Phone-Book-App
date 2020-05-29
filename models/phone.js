@@ -5,8 +5,7 @@ var phoneSchema = new mongoose.Schema({
     date: Date,
     number:[
         {
-            type: Number, 
-            required:true,
+            type: Number
         }
     ],
     email:[

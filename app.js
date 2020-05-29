@@ -64,7 +64,7 @@ app.post('/phonebook/page/:page', function (req, res) {
     var number=req.body.number;
     var email= req.body.email;
     var newContact={name:name, date:date, number:number, email,email};
-    Phonebook.create(newContact, function (err, newlyCreated) {
+    Phonebook.create(newContact, function (err) {
         if (err) {
             console.log(err);
         }

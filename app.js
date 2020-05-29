@@ -26,7 +26,6 @@ app.get('/', function(req,res){
 });
 app.get('/phonebook', function(req,res){
     res.redirect("/phonebook/page/1");
-
 });
 //INDEX- display all the phonebook contacts from DB
 app.get('/phonebook/page/:page', function (req, res) {
@@ -70,7 +69,6 @@ app.post('/phonebook', function (req, res) {
             console.log(err);
         }
         else {
-            console.log(newlyCreated);
             res.redirect("/phonebook/page/1");
         }
     });

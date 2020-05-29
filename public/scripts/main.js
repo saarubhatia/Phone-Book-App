@@ -29,6 +29,7 @@ $(document).ready(function () {
     //Click on delete
     $("#toggle-form3").click(function (event) {
         $("#phone_del").fadeOut(500, function () {
+            $("#pnumb2").val("");
             $("#toggle-form4").show();
         });
         event.stopPropagation();
@@ -42,6 +43,7 @@ $(document).ready(function () {
 
     $("#toggle-form6").click(function (event) {
         $("#email_del").fadeOut(500, function () {
+            $("#email2").val("");
             $("#toggle-form5").show();
         });
         event.stopPropagation();
@@ -52,4 +54,15 @@ $(document).ready(function () {
         });
         event.stopPropagation();
     });
+    $('#demo').pagination({
+        dataSource: [1, 2, 3, 4, 5, 6, 7, ... , 35],
+        pageSize: 4,
+        autoHidePrevious: true,
+        autoHideNext: true,
+        callback: function(data, pagination) {
+            // template method of yourself
+            var html = template(data);
+            $("#dataContainer").html(html);
+        }
+    })
 });

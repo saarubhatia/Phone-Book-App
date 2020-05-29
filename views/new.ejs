@@ -1,34 +1,34 @@
 <%- include('partials/header') %>
 <div class="container">
     <div style="width:30%; margin: 75px auto">
-        <h1 style="text-align:center">Add new contact</h1>
+        <h1 style="text-align:center">Add New Contact</h1>
         <form action="/phonebook" method="POST">
             <div class="form-group">
-                <input class="form-control" type="text" name="contact[name]" placeholder="name" required>
+                <input class="form-control" type="text" name="contact[name]" placeholder="Name" required>
             </div>
             <div class="form-group">
-                <input class="form-control" type="date" name="contact[date]">
+                <input class="form-control" type="date" placeholder="dd/mm/yyyy"name="contact[date]" >
             </div>
             <div class="input-group mb-3">
-                <input type="number" class="form-control" pattern="[1-9]{1}[0-9]{9}"  name="contact[number][0]">
+                <input type="number" class="form-control" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[0]" required>
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form"><i class="fa fa-plus" ></i></span></span>
                 </div>
             </div>
             <div class="input-group mb-3" id="phone_add" style="display:none">
-                <input type="number" class="form-control" pattern="[1-9]{1}[0-9]{9}" vname="contact[number][1]">
+                <input type="number" class="form-control" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[1]">
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form1" ><i class="fa fa-trash"></i></span></span>
                 </div>
             </div>
             <div class="input-group mb-3">
-                <input type="email" class="form-control" name="contact[email][0]">
+                <input type="email" class="form-control" placeholder="abc@gmail.com" name="email[0]" required>
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form2"><i class="fa fa-plus" ></i></span></span>
                 </div>
             </div>
-            <div class="input-group mb-3" id="email_add" style="display: none;">
-                <input type="number" class="form-control" name="contact[email][1]">
+            <div class="input-group mb-3" id="email_add"  style="display: none;">
+                <input type="email" class="form-control"  placeholder="abc@gmail.com" name="email[1]">
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form21"> <i class="fa fa-trash"></i></span></span>
                 </div>

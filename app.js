@@ -1,98 +1,111 @@
 var express = require('express'),
     app = express(),
     bodyParser = require("body-parser"),
-    mongoose= require("mongoose");
-    methodOverride = require("method-override"),
-    Phonebook= require("./models/phone");
+    mongoose = require("mongoose");
+methodOverride = require("method-override"),
+    Phonebook = require("./models/phone");
 
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
-app.set("view engine","ejs");
+app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
+//MOMENT.JS 
+app.locals.moment = require("moment");
 
 //DB CREATED
-var url=process.env.DATABASEURL || "mongodb://localhost/phonebook";
-mongoose.connect(url,{ useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex: true });
+var url = process.env.DATABASEURL || "mongodb://localhost/phonebook";
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
 
 //======================
 //ROUTES
 //======================
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.render('landing');
 });
 
 //INDEX- display all the phonebook contacts from DB
-app.get('/phonebook', function(req, res){
-    // Phonebook.find({}, function(err, allContacts){
-    //     if(err){
-    //         console.log(err);
-    //     }
-    //     else{
-                 res.render('index');
-    //     } 
-    // });
-});
-//, {contacts: allContacts}
-
-//CREATE- Add new contact to DB
-app.post('/phonebook', function(req, res){
-    Phonebook.create(req.body.contact, function(err,newlycreated){
-        if(err){
+app.get('/phonebook', function (req, res) {
+    const regex=new RegExp(escapeRegex(req.query.search),'gi');
+    Phonebook.find({name:regex}).sort('name').exec(function (err, allContacts) {
+        if (err) {
             console.log(err);
         }
-        else{ 
+        else {
+            res.render('index', { contacts: allContacts })
+        }
+    });
+});
+function escapeRegex(text) {
+    if(text){
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    }
+};
+
+//CREATE- Add new contact to DB
+app.post('/phonebook', function (req, res) {
+    Phonebook.create(req.body.contact, function (err, newlyCreated) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            req.body.number.forEach(function (phone) {
+                if (phone!='')
+                    newlyCreated.number.push(phone);
+            });
+            req.body.email.forEach(function (email) {
+                if (email != '')
+                    newlyCreated.email.push(email);
+            });
+            newlyCreated.save();
             res.redirect("/phonebook");
         }
     });
 });
 
 //NEW- display form to make a new contact
-app.get('/phonebook/new', function(req, res){
+app.get('/phonebook/new', function (req, res) {
     res.render('new');
-}); 
+});
 
 //EDIT- Edit a particular contact
 app.get("/phonebook/:id/edit", function (req, res) {
-    // Campground.findById(req.params.id, function (err, foundCampground) {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    res.render('edit');
-    //     }
-    // });
+    Phonebook.findById(req.params.id, function (err, foundContact) {
+             if (err) {
+                 console.log(err);
+             }
+             else {
+                res.render('edit',{contact:foundContact});
+             }
+         });
+    });
+
+    //UPDATE- Update a particular contact and redirect it somewhere.
+app.put("/phonebook/:id", function (req, res) {
+    Phonebook.findByIdAndUpdate(req.params.id, req.body.contact, function (err, updatedContact) {
+        if (err) {
+            res.redirect("/phonebook");
+        }
+        else {
+            res.redirect("/phonebook");
+        }
+    });
 });
 
-//UPDATE- Update a particular contact and redirect it somewhere.
-app.put("/phonebook/:id", function(req,res){
-    // Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
-    //     if(err){
-    //         res.redirect("/campgrounds");
-    //     }
-    //     else{
-    //         res.redirect("/campgrounds/" + req.params.id) ;
-    //     }
-    // });
-});
-
-//DELETE- Destroy a specific contact
-app.delete('/phonebook/:id', function(req,res){
-    // Campground.findByIdAndRemove(req.params.id,function(err){
-    //     if(err){
-    //         res.redirect("/campgrounds");
-    //     }
-    //     else{
-    //         res.redirect("/campgrounds");
-    //     }
-    // });
-});
+    //DELETE- Destroy a specific contact
+    app.delete('/phonebook/:_id', function (req, res) {
+        Phonebook.findByIdAndRemove(req.params._id, function (err) {
+            if (err) {
+                res.redirect("/phonebook");
+            }
+            else {
+                res.redirect("/phonebook");
+            }
+        });
+    });
 
 
-app.listen(process.env.PORT || 3000 ,function(){
-    console.log("Phone Book Web App is running");
-});
-
-
-
+    app.listen(process.env.PORT || 3000, function () {
+        console.log("YelpCamp is running");
+    });

@@ -58,7 +58,7 @@ function escapeRegex(text) {
 };
 
 //CREATE- Add new contact to DB
-app.post('/phonebook', function (req, res) {
+app.post('/phonebook/page/1', function (req, res) {
     var name=req.body.name;
     var date=req.body.date;
     var number=req.body.number;

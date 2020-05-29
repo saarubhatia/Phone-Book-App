@@ -56,7 +56,7 @@ $(document).ready(function () {
     });
     $("#phonenumber").on("blur",function (event) {
         var mobileNum = $(this).val();
-        var validateMobNum = /^\d*(?:\.\d{1,2})?$/;
+        var validateMobNum = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (validateMobNum.test(mobileNum) && mobileNum.length == 10) {
 
         }

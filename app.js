@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose");
-methodOverride = require("method-override"),
+    methodOverride = require("method-override"),
     Phonebook = require("./models/phone");
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,26 +15,45 @@ app.locals.moment = require("moment");
 
 //DB CREATED
 var url = process.env.DATABASEURL || "mongodb://localhost/phonebook";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false });
 
 //======================
 //ROUTES
 //======================
+app.get('/', function(req,res){
+    res.redirect("/phonebook/page/1");
 
+});
+app.get('/phonebook', function(req,res){
+    res.redirect("/phonebook/page/1");
+
+});
 //INDEX- display all the phonebook contacts from DB
-app.get('/phonebook', function (req, res) {
-    const regex=new RegExp(escapeRegex(req.query.search),'gi');
-    Phonebook.find({name:regex}).sort('name').exec(function (err, allContacts) {
+app.get('/phonebook/page/:page', function (req, res) {
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    var perPage = 4;
+    var page = req.params.page || 1;
+    Phonebook
+        .find({name:regex})
+        .sort('name')
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .exec(function (err, contacts) {
         if (err) {
             console.log(err);
         }
+        Phonebook.countDocuments().exec(function (err, count) {
+            if (err) {
+                console.log(err);
+            }
         else {
-            res.render('index', { contacts: allContacts })
+            res.render('index', { contacts: contacts, current:page, pages: Math.ceil(count / perPage)  })
         }
     });
 });
+});
 function escapeRegex(text) {
-    if(text){
+    if (text) {
         return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
     }
 };
@@ -47,7 +66,7 @@ app.post('/phonebook', function (req, res) {
         }
         else {
             req.body.number.forEach(function (phone) {
-                if (phone!='')
+                if (phone != '')
                     newlyCreated.number.push(phone);
             });
             req.body.email.forEach(function (email) {
@@ -55,7 +74,7 @@ app.post('/phonebook', function (req, res) {
                     newlyCreated.email.push(email);
             });
             newlyCreated.save();
-            res.redirect("/phonebook");
+            res.redirect("/phonebook/page/1");
         }
     });
 });
@@ -68,40 +87,40 @@ app.get('/phonebook/new', function (req, res) {
 //EDIT- Edit a particular contact
 app.get("/phonebook/:id/edit", function (req, res) {
     Phonebook.findById(req.params.id, function (err, foundContact) {
-             if (err) {
-                 console.log(err);
-             }
-             else {
-                res.render('edit',{contact:foundContact});
-             }
-         });
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render('edit', { contact: foundContact });
+        }
     });
+});
 
-    //UPDATE- Update a particular contact and redirect it somewhere.
+//UPDATE- Update a particular contact and redirect it somewhere.
 app.put("/phonebook/:id", function (req, res) {
     Phonebook.findByIdAndUpdate(req.params.id, req.body.contact, function (err, updatedContact) {
         if (err) {
             res.redirect("/phonebook");
         }
         else {
-            res.redirect("/phonebook");
+            res.redirect("/phonebook/page/1");
         }
     });
 });
 
-    //DELETE- Destroy a specific contact
-    app.delete('/phonebook/:_id', function (req, res) {
-        Phonebook.findByIdAndRemove(req.params._id, function (err) {
-            if (err) {
-                res.redirect("/phonebook");
-            }
-            else {
-                res.redirect("/phonebook");
-            }
-        });
+//DELETE- Destroy a specific contact
+app.delete('/phonebook/:_id', function (req, res) {
+    Phonebook.findByIdAndRemove(req.params._id, function (err) {
+        if (err) {
+            res.redirect("/phonebook");
+        }
+        else {
+            res.redirect("/phonebook/page/1");
+        }
     });
+});
 
 
-    app.listen(process.env.PORT || 3000, function () {
-        console.log("PhoneBook Web App is running");
-    });
+app.listen(process.env.PORT || 3000, function () {
+    console.log("PhoneBook Web App is running");
+});

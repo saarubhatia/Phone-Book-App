@@ -60,6 +60,37 @@
             </div>
         </div>
         <% }); %>
+        <% if (pages > 0) { %>
+            <ul class="pagination" style="float: right; margin: 25px auto;">
+                <% if (current == 1) { %>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <% } else { %>
+                <li class="page-item"><a class="page-link" href="/phonebook/page/1">1</a></li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 3 : 2) %>
+                <% if (i !== 2) { %>
+                <li class="page-item"><a class="page-link">Previous</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 3) && i < pages; i++) { %>
+                <% if (i == current) { %>
+                <li class="page-item active"><a class="page-link" href="#"><%= i %></a></li>
+                <% } else { %>
+                <li class="page-item"><a class="page-link" href="/phonebook/page/<%= i %>"><%= i %></a></li>
+                <% } %>
+                <% if (i == Number(current) + 3 && i < pages) { %>
+                <li class="page-item"><a class="page-link">Next</a></li>
+                <% } %>
+                <% } %>
+                <% if (pages != 1){ %>
+                <% if (current == pages) { %>
+                <li class="page-item active"><a class="page-link"><%= pages %></a></li>
+                <% } else { %>
+                <li class="page-item"><a class="page-link" href="/phonebook/page/<%= pages %>"><%= pages %>
+                </a></li>
+                <% } %>
+                <% } %>
+            </ul>
+            <% } %>
         <a href="/phonebook/new"><i class="fa fa-plus-circle fa-2x" style="float:right" aria-hidden="true"></i></a>
     </div>
 </div>

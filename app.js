@@ -21,10 +21,6 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCrea
 //ROUTES
 //======================
 
-app.get('/', function (req, res) {
-    res.render('landing');
-});
-
 //INDEX- display all the phonebook contacts from DB
 app.get('/phonebook', function (req, res) {
     const regex=new RegExp(escapeRegex(req.query.search),'gi');
@@ -107,5 +103,5 @@ app.put("/phonebook/:id", function (req, res) {
 
 
     app.listen(process.env.PORT || 3000, function () {
-        console.log("YelpCamp is running");
+        console.log("PhoneBook Web App is running");
     });

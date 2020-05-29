@@ -1,6 +1,6 @@
 <%- include('partials/header') %>
 <div class="container">
-    <div style="width:30%; margin: 75px auto">
+    <div style="width:40%; margin: 75px auto">
         <h1 style="text-align:center">Add New Contact</h1>
         <form action="/phonebook" method="POST">
             <div class="form-group">
@@ -10,7 +10,7 @@
                 <input class="form-control" type="date" placeholder="dd/mm/yyyy"name="contact[date]" >
             </div>
             <div class="input-group mb-3">
-                <input type="number" class="form-control" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[0]" required>
+                <input type="number" class="form-control" id="phonenumber" onkeyPress="if(this.value.length==10) return false;" placeholder="98XXXXXXXX" name="number[0]" required>
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form"><i class="fa fa-plus" ></i></span></span>
                 </div>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="abc@gmail.com" name="email[0]" required>
+                <input type="email" class="form-control" placeholder="abc@gmail.com" name="email[0]">
                 <div class="input-group-append">
                   <span class="input-group-text" id="toggle-form2"><i class="fa fa-plus" ></i></span></span>
                 </div>

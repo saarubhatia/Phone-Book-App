@@ -54,4 +54,14 @@ $(document).ready(function () {
         });
         event.stopPropagation();
     });
+    $("#phonenumber").on("blur",function (event) {
+        var mobileNum = $(this).val();
+        var validateMobNum = /^\d*(?:\.\d{1,2})?$/;
+        if (validateMobNum.test(mobileNum) && mobileNum.length == 10) {
+
+        }
+        else {
+            alert("Invalid Mobile Number");
+        }
+    });
 });
